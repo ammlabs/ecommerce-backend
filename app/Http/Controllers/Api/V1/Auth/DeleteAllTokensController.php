@@ -13,11 +13,13 @@ use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\Response as ScribeResponse;
 use Knuckles\Scribe\Attributes\Subgroup;
+use Dedoc\Scramble\Attributes\PathParameter;
 
 #[Group(name: 'Authentication')]
 #[Subgroup(name: 'Token Authentication')]
 #[Endpoint(title: 'Revoke All Tokens', description: 'Revoke all personal access tokens for the authenticated user.')]
 #[Authenticated]
+#[PathParameter('user', description: 'User being updated', type: 'string', format: 'uuid', example: '550e8400-e29b-41d4-a716-446655440000')]
 #[ScribeResponse(content: null, status: 204, description: 'All tokens revoked.')]
 #[ScribeResponse(content: ['message' => 'Forbidden.'], status: 403, description: 'Token is missing required ability.')]
 #[ScribeResponse(content: ['message' => 'Unauthenticated.'], status: 401, description: 'Authentication failed.')]
