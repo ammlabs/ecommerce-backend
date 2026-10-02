@@ -14,6 +14,9 @@ use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\V1\Auth\SendEmailVerificationNotificationController;
 use App\Http\Controllers\Api\V1\Auth\ShowResetPasswordTokenController;
 use App\Http\Controllers\Api\V1\Auth\VerifyEmailController;
+use App\Http\Controllers\Api\V1\Catalog\ListCategoriesController;
+use App\Http\Controllers\Api\V1\Catalog\ListProductsController;
+use App\Http\Controllers\Api\V1\Catalog\ShowProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/register', RegisterController::class)
@@ -33,6 +36,16 @@ Route::get('/auth/password/reset/{token}', ShowResetPasswordTokenController::cla
 Route::get('/auth/email/verify/{id}/{hash}', VerifyEmailController::class)
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
+
+Route::get('/products', ListProductsController::class)
+    ->middleware('throttle:catalog')
+    ->name('v1.products.index');
+Route::get('/products/{slug}', ShowProductController::class)
+    ->middleware('throttle:catalog')
+    ->name('v1.products.show');
+Route::get('/categories', ListCategoriesController::class)
+    ->middleware('throttle:catalog')
+    ->name('v1.categories.index');
 
 Route::middleware(['auth:sanctum', 'throttle:auth-protected'])->group(function (): void {
     Route::get('/auth/me', MeController::class)

@@ -5,10 +5,13 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'http://kit.test'
+    url: 'http://ecommerce-backend.test'
 tags:
   -
     name: Authentication
+    description: ''
+  -
+    name: Catalog
     description: ''
 components:
   securitySchemes:
@@ -40,7 +43,7 @@ paths:
                     attributes:
                       name: 'Justina Gaylord'
                       email: lafayette.considine@example.com
-                      email_verified_at: '2026-02-23T19:05:13+00:00'
+                      email_verified_at: '2026-10-02T16:36:37+00:00'
                       created_at: null
                       updated_at: null
                   meta:
@@ -68,7 +71,7 @@ paths:
                             example: lafayette.considine@example.com
                           email_verified_at:
                             type: string
-                            example: '2026-02-23T19:05:13+00:00'
+                            example: '2026-10-02T16:36:37+00:00'
                           created_at:
                             type: string
                             example: null
@@ -164,7 +167,7 @@ paths:
                     attributes:
                       name: 'Justina Gaylord'
                       email: cormier.nick@example.com
-                      email_verified_at: '2026-02-23T19:05:13+00:00'
+                      email_verified_at: '2026-10-02T16:36:37+00:00'
                       created_at: null
                       updated_at: null
                   meta:
@@ -192,7 +195,7 @@ paths:
                             example: cormier.nick@example.com
                           email_verified_at:
                             type: string
-                            example: '2026-02-23T19:05:13+00:00'
+                            example: '2026-10-02T16:36:37+00:00'
                           created_at:
                             type: string
                             example: null
@@ -525,7 +528,7 @@ paths:
                     attributes:
                       name: 'Morgan Hirthe'
                       email: dare.emelie@example.com
-                      email_verified_at: '2026-02-23T19:05:13+00:00'
+                      email_verified_at: '2026-10-02T16:36:37+00:00'
                       created_at: null
                       updated_at: null
                 properties:
@@ -549,7 +552,7 @@ paths:
                             example: dare.emelie@example.com
                           email_verified_at:
                             type: string
-                            example: '2026-02-23T19:05:13+00:00'
+                            example: '2026-10-02T16:36:37+00:00'
                           created_at:
                             type: string
                             example: null
@@ -867,3 +870,68 @@ paths:
                     example: Unauthenticated.
       tags:
         - Authentication
+  /v1/products:
+    get:
+      summary: 'List products'
+      operationId: listProducts
+      description: 'Paginated active products, filterable by category, name search, or ids.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                search:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: 'n'
+                ids:
+                  type: array
+                  description: 'Must be 26 characters.'
+                  example:
+                    - gzmiyvdljnikhwaykcmyuwpwlv
+                  items:
+                    type: string
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 50.'
+                  example: 3
+      security: []
+  '/v1/products/{slug}':
+    get:
+      summary: 'Show product'
+      operationId: showProduct
+      description: 'Fetch one active product by slug.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      security: []
+    parameters:
+      -
+        in: path
+        name: slug
+        description: 'The slug of the product.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /v1/categories:
+    get:
+      summary: 'List categories'
+      operationId: listCategories
+      description: 'All categories, alphabetical.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      security: []

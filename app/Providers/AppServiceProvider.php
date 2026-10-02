@@ -41,5 +41,9 @@ final class AppServiceProvider extends ServiceProvider
                 (string) ($request->user()?->getAuthIdentifier() ?? $request->ip())
             ),
         ]);
+
+        RateLimiter::for('catalog', fn (Request $request) => [
+            Limit::perMinute(120)->by($request->ip()),
+        ]);
     }
 }
