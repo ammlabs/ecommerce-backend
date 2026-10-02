@@ -3,10 +3,13 @@ domains:
 php_version: "8.5"
 framework: laravel
 framework_version: "12"
+secured: true
 services:
   - mailpit
+  - meilisearch
   - postgres
   - redis
+  - rustfs
 workers:
   - queue
   - schedule
