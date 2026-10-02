@@ -285,3 +285,19 @@ config/
 ## License
 
 MIT
+
+## Prototype demo
+
+```bash
+composer setup                      # install, .env, key
+# set DB_* in .env, then:
+php artisan migrate:fresh --seed    # categories, products and demo users
+composer test
+```
+
+Demo logins: `admin@example.com` / `password` (admin) and `test@example.com` / `password` (customer). API docs are served at `/docs`.
+
+Known stubs:
+
+- Payment is a stub in `PayOrderController` (marks the order paid). Replace it with a Stripe PaymentIntent plus a webhook that sets the status.
+- The concurrency guarantee of checkout (`lockForUpdate` on products) is not exercised by the SQLite test suite; check it against Postgres with two simultaneous orders for the last unit of stock.
