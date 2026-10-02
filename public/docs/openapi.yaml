@@ -8,6 +8,9 @@ servers:
     url: 'http://ecommerce-backend.test'
 tags:
   -
+    name: Admin
+    description: ''
+  -
     name: Authentication
     description: ''
   -
@@ -26,6 +29,215 @@ security:
   -
     default: []
 paths:
+  /v1/admin/products:
+    get:
+      summary: 'List products (admin)'
+      operationId: listProductsadmin
+      description: 'All products including inactive, newest first.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Admin
+      security: []
+    post:
+      summary: 'Create product'
+      operationId: createProduct
+      description: 'Create a product.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example: architecto
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                slug:
+                  type: string
+                  description: 'Must contain only letters, numbers, dashes and underscores. Must not be greater than 255 characters.'
+                  example: g
+                description:
+                  type: string
+                  description: 'Must not be greater than 5000 characters.'
+                  example: 'Quos velit et fugiat sunt nihil accusantium harum.'
+                  nullable: true
+                price_cents:
+                  type: integer
+                  description: 'Must be at least 0. Must not be greater than 10000000.'
+                  example: 5
+                stock:
+                  type: integer
+                  description: 'Must be at least 0. Must not be greater than 1000000.'
+                  example: 8
+                image_url:
+                  type: string
+                  description: 'Must be a valid URL. Must not be greater than 2048 characters.'
+                  example: 'http://www.schuster.biz/perspiciatis-quo-omnis-nostrum-aut-adipisci-quidem-nostrum-qui'
+                  nullable: true
+                is_active:
+                  type: boolean
+                  description: ''
+                  example: false
+              required:
+                - category_id
+                - name
+                - slug
+                - price_cents
+                - stock
+                - is_active
+      security: []
+  '/v1/admin/products/{id}':
+    get:
+      summary: 'Show product (admin)'
+      operationId: showProductadmin
+      description: 'One product by id, active or not.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Admin
+      security: []
+    put:
+      summary: 'Update product'
+      operationId: updateProduct
+      description: "Replace a product's fields."
+      parameters: []
+      responses: {  }
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example: architecto
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                slug:
+                  type: string
+                  description: 'Must contain only letters, numbers, dashes and underscores. Must not be greater than 255 characters.'
+                  example: g
+                description:
+                  type: string
+                  description: 'Must not be greater than 5000 characters.'
+                  example: 'Quos velit et fugiat sunt nihil accusantium harum.'
+                  nullable: true
+                price_cents:
+                  type: integer
+                  description: 'Must be at least 0. Must not be greater than 10000000.'
+                  example: 5
+                stock:
+                  type: integer
+                  description: 'Must be at least 0. Must not be greater than 1000000.'
+                  example: 8
+                image_url:
+                  type: string
+                  description: 'Must be a valid URL. Must not be greater than 2048 characters.'
+                  example: 'http://www.schuster.biz/perspiciatis-quo-omnis-nostrum-aut-adipisci-quidem-nostrum-qui'
+                  nullable: true
+                is_active:
+                  type: boolean
+                  description: ''
+                  example: false
+              required:
+                - category_id
+                - name
+                - slug
+                - price_cents
+                - stock
+                - is_active
+      security: []
+    delete:
+      summary: 'Delete product'
+      operationId: deleteProduct
+      description: 'Delete a product that has never been ordered; otherwise 409 (deactivate it instead).'
+      parameters: []
+      responses: {  }
+      tags:
+        - Admin
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the product.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /v1/admin/orders:
+    get:
+      summary: 'List orders (admin)'
+      operationId: listOrdersadmin
+      description: 'All orders with customer and items, newest first.'
+      parameters:
+        -
+          in: query
+          name: status
+          description: 'Filter by status.'
+          example: paid
+          required: false
+          schema:
+            type: string
+            description: 'Filter by status.'
+            example: paid
+      responses: {  }
+      tags:
+        - Admin
+      security: []
+  '/v1/admin/orders/{id}':
+    patch:
+      summary: 'Update order status'
+      operationId: updateOrderStatus
+      description: 'pending→paid|cancelled, paid→shipped|cancelled. Cancelling restocks items.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: ''
+                  example: architecto
+                  enum:
+                    - pending
+                    - paid
+                    - shipped
+                    - cancelled
+              required:
+                - status
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the order.'
+        example: architecto
+        required: true
+        schema:
+          type: string
   /v1/auth/register:
     post:
       summary: Register
@@ -46,7 +258,8 @@ paths:
                     attributes:
                       name: 'Justina Gaylord'
                       email: lafayette.considine@example.com
-                      email_verified_at: '2026-10-02T16:39:49+00:00'
+                      is_admin: false
+                      email_verified_at: '2026-10-02T17:45:02+00:00'
                       created_at: null
                       updated_at: null
                   meta:
@@ -72,9 +285,12 @@ paths:
                           email:
                             type: string
                             example: lafayette.considine@example.com
+                          is_admin:
+                            type: boolean
+                            example: false
                           email_verified_at:
                             type: string
-                            example: '2026-10-02T16:39:49+00:00'
+                            example: '2026-10-02T17:45:02+00:00'
                           created_at:
                             type: string
                             example: null
@@ -170,7 +386,8 @@ paths:
                     attributes:
                       name: 'Justina Gaylord'
                       email: cormier.nick@example.com
-                      email_verified_at: '2026-10-02T16:39:49+00:00'
+                      is_admin: false
+                      email_verified_at: '2026-10-02T17:45:02+00:00'
                       created_at: null
                       updated_at: null
                   meta:
@@ -196,9 +413,12 @@ paths:
                           email:
                             type: string
                             example: cormier.nick@example.com
+                          is_admin:
+                            type: boolean
+                            example: false
                           email_verified_at:
                             type: string
-                            example: '2026-10-02T16:39:49+00:00'
+                            example: '2026-10-02T17:45:02+00:00'
                           created_at:
                             type: string
                             example: null
@@ -531,7 +751,8 @@ paths:
                     attributes:
                       name: 'Morgan Hirthe'
                       email: dare.emelie@example.com
-                      email_verified_at: '2026-10-02T16:39:49+00:00'
+                      is_admin: false
+                      email_verified_at: '2026-10-02T17:45:02+00:00'
                       created_at: null
                       updated_at: null
                 properties:
@@ -553,9 +774,12 @@ paths:
                           email:
                             type: string
                             example: dare.emelie@example.com
+                          is_admin:
+                            type: boolean
+                            example: false
                           email_verified_at:
                             type: string
-                            example: '2026-10-02T16:39:49+00:00'
+                            example: '2026-10-02T17:45:02+00:00'
                           created_at:
                             type: string
                             example: null

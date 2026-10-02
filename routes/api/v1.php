@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\V1\Admin\DestroyProductController as AdminDestroyProductController;
+use App\Http\Controllers\Api\V1\Admin\ListOrdersController as AdminListOrdersController;
+use App\Http\Controllers\Api\V1\Admin\ListProductsController as AdminListProductsController;
+use App\Http\Controllers\Api\V1\Admin\ShowProductController as AdminShowProductController;
+use App\Http\Controllers\Api\V1\Admin\StoreProductController as AdminStoreProductController;
+use App\Http\Controllers\Api\V1\Admin\UpdateOrderStatusController as AdminUpdateOrderStatusController;
+use App\Http\Controllers\Api\V1\Admin\UpdateProductController as AdminUpdateProductController;
 use App\Http\Controllers\Api\V1\Auth\DeleteAllTokensController;
 use App\Http\Controllers\Api\V1\Auth\DeleteTokenController;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
@@ -83,3 +90,15 @@ Route::middleware(['auth:sanctum', 'throttle:auth-protected'])->group(function (
         ->middleware('abilities:orders:write')
         ->name('v1.orders.pay');
 });
+
+Route::middleware(['auth:sanctum', 'throttle:auth-protected', 'can:admin'])
+    ->prefix('admin')
+    ->group(function (): void {
+        Route::get('/products', AdminListProductsController::class)->name('v1.admin.products.index');
+        Route::post('/products', AdminStoreProductController::class)->name('v1.admin.products.store');
+        Route::get('/products/{id}', AdminShowProductController::class)->name('v1.admin.products.show');
+        Route::put('/products/{id}', AdminUpdateProductController::class)->name('v1.admin.products.update');
+        Route::delete('/products/{id}', AdminDestroyProductController::class)->name('v1.admin.products.destroy');
+        Route::get('/orders', AdminListOrdersController::class)->name('v1.admin.orders.index');
+        Route::patch('/orders/{id}', AdminUpdateOrderStatusController::class)->name('v1.admin.orders.update');
+    });

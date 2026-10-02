@@ -34,6 +34,7 @@ final class UserResource extends JsonApiResource
         return [
             'name' => $user->name,
             'email' => $user->email,
+            'is_admin' => $user->is_admin,
             'email_verified_at' => $user->email_verified_at?->toAtomString(),
             'created_at' => $user->created_at?->toAtomString(),
             'updated_at' => $user->updated_at?->toAtomString(),

@@ -28,6 +28,11 @@ final class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = ['name', 'email', 'password'];
 
     /**
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['is_admin' => false];
+
+    /**
      * @var list<string>
      */
     protected $hidden = ['password', 'remember_token'];
@@ -38,6 +43,7 @@ final class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 

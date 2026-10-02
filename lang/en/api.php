@@ -23,6 +23,9 @@ return [
         'not_payable' => 'Only pending orders can be paid.',
         'invalid_transition' => 'This order cannot move to that status.',
     ],
+    'admin' => [
+        'product_has_orders' => 'This product has orders and cannot be deleted. Deactivate it instead.',
+    ],
     'errors' => [
         'unauthenticated' => 'Unauthenticated.',
         'forbidden' => 'Forbidden.',

@@ -19,6 +19,12 @@ final class DatabaseSeeder extends Seeder
     {
         $this->call(CatalogSeeder::class);
 
+        // Demo credentials for the prototype only — never seed this in production.
+        User::factory()->admin()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+        ]);
+
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',

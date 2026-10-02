@@ -23,6 +23,9 @@ return [
         'not_payable' => 'Solo se pueden pagar pedidos pendientes.',
         'invalid_transition' => 'Este pedido no puede pasar a ese estado.',
     ],
+    'admin' => [
+        'product_has_orders' => 'Este producto tiene pedidos y no se puede eliminar. Desactívalo en su lugar.',
+    ],
     'errors' => [
         'unauthenticated' => 'No autenticado.',
         'forbidden' => 'Prohibido.',
