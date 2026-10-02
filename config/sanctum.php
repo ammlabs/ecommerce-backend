@@ -67,6 +67,8 @@ return [
             'auth:verification:send',
             'auth:tokens:read',
             'auth:tokens:delete',
+            'orders:read',
+            'orders:write',
         ],
     ],
 

@@ -17,6 +17,10 @@ use App\Http\Controllers\Api\V1\Auth\VerifyEmailController;
 use App\Http\Controllers\Api\V1\Catalog\ListCategoriesController;
 use App\Http\Controllers\Api\V1\Catalog\ListProductsController;
 use App\Http\Controllers\Api\V1\Catalog\ShowProductController;
+use App\Http\Controllers\Api\V1\Orders\CreateOrderController;
+use App\Http\Controllers\Api\V1\Orders\ListOrdersController;
+use App\Http\Controllers\Api\V1\Orders\PayOrderController;
+use App\Http\Controllers\Api\V1\Orders\ShowOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/register', RegisterController::class)
@@ -66,4 +70,16 @@ Route::middleware(['auth:sanctum', 'throttle:auth-protected'])->group(function (
     Route::post('/auth/email/verification-notification', SendEmailVerificationNotificationController::class)
         ->middleware(['abilities:auth:verification:send', 'throttle:6,1'])
         ->name('v1.auth.email.verification-notification');
+    Route::post('/orders', CreateOrderController::class)
+        ->middleware(['abilities:orders:write', 'idempotency'])
+        ->name('v1.orders.store');
+    Route::get('/orders', ListOrdersController::class)
+        ->middleware('abilities:orders:read')
+        ->name('v1.orders.index');
+    Route::get('/orders/{id}', ShowOrderController::class)
+        ->middleware('abilities:orders:read')
+        ->name('v1.orders.show');
+    Route::post('/orders/{id}/pay', PayOrderController::class)
+        ->middleware('abilities:orders:write')
+        ->name('v1.orders.pay');
 });

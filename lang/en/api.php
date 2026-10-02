@@ -17,6 +17,12 @@ return [
         'password_reset_failed' => 'Unable to reset password with the provided details.',
         'token_not_found' => 'Token not found.',
     ],
+    'orders' => [
+        'insufficient_stock' => 'Insufficient stock for product :product.',
+        'product_unavailable' => 'Product :product is not available.',
+        'not_payable' => 'Only pending orders can be paid.',
+        'invalid_transition' => 'This order cannot move to that status.',
+    ],
     'errors' => [
         'unauthenticated' => 'Unauthenticated.',
         'forbidden' => 'Forbidden.',

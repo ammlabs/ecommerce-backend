@@ -17,6 +17,12 @@ return [
         'password_reset_failed' => 'No se pudo restablecer la contrasena con los datos proporcionados.',
         'token_not_found' => 'Token no encontrado.',
     ],
+    'orders' => [
+        'insufficient_stock' => 'Stock insuficiente para el producto :product.',
+        'product_unavailable' => 'El producto :product no está disponible.',
+        'not_payable' => 'Solo se pueden pagar pedidos pendientes.',
+        'invalid_transition' => 'Este pedido no puede pasar a ese estado.',
+    ],
     'errors' => [
         'unauthenticated' => 'No autenticado.',
         'forbidden' => 'Prohibido.',

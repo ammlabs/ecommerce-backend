@@ -13,6 +13,9 @@ tags:
   -
     name: Catalog
     description: ''
+  -
+    name: Orders
+    description: ''
 components:
   securitySchemes:
     default:
@@ -43,7 +46,7 @@ paths:
                     attributes:
                       name: 'Justina Gaylord'
                       email: lafayette.considine@example.com
-                      email_verified_at: '2026-10-02T16:36:37+00:00'
+                      email_verified_at: '2026-10-02T16:39:49+00:00'
                       created_at: null
                       updated_at: null
                   meta:
@@ -71,7 +74,7 @@ paths:
                             example: lafayette.considine@example.com
                           email_verified_at:
                             type: string
-                            example: '2026-10-02T16:36:37+00:00'
+                            example: '2026-10-02T16:39:49+00:00'
                           created_at:
                             type: string
                             example: null
@@ -167,7 +170,7 @@ paths:
                     attributes:
                       name: 'Justina Gaylord'
                       email: cormier.nick@example.com
-                      email_verified_at: '2026-10-02T16:36:37+00:00'
+                      email_verified_at: '2026-10-02T16:39:49+00:00'
                       created_at: null
                       updated_at: null
                   meta:
@@ -195,7 +198,7 @@ paths:
                             example: cormier.nick@example.com
                           email_verified_at:
                             type: string
-                            example: '2026-10-02T16:36:37+00:00'
+                            example: '2026-10-02T16:39:49+00:00'
                           created_at:
                             type: string
                             example: null
@@ -528,7 +531,7 @@ paths:
                     attributes:
                       name: 'Morgan Hirthe'
                       email: dare.emelie@example.com
-                      email_verified_at: '2026-10-02T16:36:37+00:00'
+                      email_verified_at: '2026-10-02T16:39:49+00:00'
                       created_at: null
                       updated_at: null
                 properties:
@@ -552,7 +555,7 @@ paths:
                             example: dare.emelie@example.com
                           email_verified_at:
                             type: string
-                            example: '2026-10-02T16:36:37+00:00'
+                            example: '2026-10-02T16:39:49+00:00'
                           created_at:
                             type: string
                             example: null
@@ -935,3 +938,120 @@ paths:
       tags:
         - Catalog
       security: []
+  /v1/orders:
+    post:
+      summary: 'Place order'
+      operationId: placeOrder
+      description: 'Create an order from {product_id, qty} lines. Prices come from the database. Supports Idempotency-Key.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  description: 'Must have at least 1 items. Must not have more than 50 items.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: string
+                        description: 'The <code>id</code> of an existing record in the products table.'
+                        example: architecto
+                      qty:
+                        type: integer
+                        description: 'Must be at least 1. Must not be greater than 99.'
+                        example: 22
+                    required:
+                      - product_id
+                      - qty
+                shipping_address:
+                  type: object
+                  description: ''
+                  example: []
+                  properties:
+                    name:
+                      type: string
+                      description: 'Must not be greater than 255 characters.'
+                      example: b
+                    line1:
+                      type: string
+                      description: 'Must not be greater than 255 characters.'
+                      example: 'n'
+                    city:
+                      type: string
+                      description: 'Must not be greater than 255 characters.'
+                      example: g
+                    postal_code:
+                      type: string
+                      description: 'Must not be greater than 32 characters.'
+                      example: z
+                    country:
+                      type: string
+                      description: 'Must not be greater than 255 characters.'
+                      example: m
+                  required:
+                    - name
+                    - line1
+                    - city
+                    - postal_code
+                    - country
+              required:
+                - items
+                - shipping_address
+      security: []
+    get:
+      summary: 'List my orders'
+      operationId: listMyOrders
+      description: "The authenticated user's orders, newest first."
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      security: []
+  '/v1/orders/{id}':
+    get:
+      summary: 'Show my order'
+      operationId: showMyOrder
+      description: "One of the authenticated user's orders; 404 for anyone else's."
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the order.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/v1/orders/{id}/pay':
+    post:
+      summary: 'Pay order (stub)'
+      operationId: payOrderstub
+      description: 'Marks a pending order as paid. Replace with a Stripe PaymentIntent + webhook.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the order.'
+        example: architecto
+        required: true
+        schema:
+          type: string
